@@ -1,0 +1,63 @@
+<html>
+	<head>
+	<title>Form</title>
+	
+	<style type="text/css">
+	
+	*{margin:0px}
+	#p1 {font-family:Century Gothic; font-size:30px}
+	#p2 {font-family:Century Gothic}
+	#form1 {padding-left:30%}
+	</style>
+	
+	</head>
+	
+	<body>
+	
+		<form>
+		<center><p id="p1">SAMPLE FORM</p></center>
+			<center>
+			<table border="3" align="center" cellspacing="5" cellpadding="5">
+				<tr>
+					<td><b><p id="p2">First Name:</p></b></td>
+					<td><input name="fname" type="text" size="30" maxlength="20" placeholder="Enter your First Name" required></td>
+				</tr>
+
+				<tr>
+					<td><b><p id="p2">Last Name:</p></b></td>
+					<td><input name="lname" type="text" size="30" maxlength="20" placeholder="Enter your Last Name" required></td>
+				</tr>
+				
+				<tr>
+					<td><b><p id="p2">Age:</p></b></td>
+					<td><input name="age" type="text" size="7" maxlength="5" placeholder="Enter Age" required></td>
+				</tr>
+				
+				<tr>
+					<td><b><p id="p2">Email:</p></b></td>
+					<td><input name="email" type="text" size="30" maxlength="20" placeholder="Enter your Email Address" required></td>
+				</tr>
+				
+				<tr>
+					<td><b><p id="p2">Address:</p></b></td>
+					<td><textarea name="addr" rows="8" cols="42" placeholder="Complete Postal Address"></textarea></td>
+				</tr>
+				
+				{{error_message}}
+				<tr>
+					<td><th colspan="2">
+					<input type="submit" value="Submit">
+					<input type="reset" value="Reset">
+					</th></td>
+				</tr>
+
+				{{success_message}}
+			</table>
+			</center>
+		</form>
+		
+	</body>
+</html>	
+				
+				
+				

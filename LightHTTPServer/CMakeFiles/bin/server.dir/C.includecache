@@ -1,0 +1,18 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/vikash/Documents/Codebase/LightHTTPServer/src/WebPage.c
+WebPage.h
+/home/vikash/Documents/Codebase/LightHTTPServer/src/WebPage.h
+
+/home/vikash/Documents/Codebase/LightHTTPServer/src/WebPage.h
+stdio.h
+-
+string.h
+-
+

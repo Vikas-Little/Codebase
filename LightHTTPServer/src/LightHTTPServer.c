@@ -229,6 +229,8 @@ int main ()
 		}
 
 		FILE *fp;
+		char *content = 0;
+		int length;
 		char local_file_location[200];
 		sprintf(local_file_location, "/home/vikash/Documents/Codebase/LightHTTPServer/web_root/%s", new_request.req_file);
 
@@ -240,8 +242,8 @@ int main ()
 			// if index.html not present then list the directory files
 			if (fp == NULL)
 			{
+				 content = malloc(4000);
 				 get_directory_files(local_file_location);
-				 char web_page_content[4000];
 				 char main_content[200];
 				 struct WebLink links[4];		
 				
@@ -254,9 +256,9 @@ int main ()
 				 strcpy (links[3].link_name, "XYZ");
 				 strcpy (links[3].link_address, "http://www.upes.ac.in");
 
-				get_web_page_content("Web Page Title", main_content, links, web_page_content);
-				printf("Web page is %lu bytes:\n%s\n", sizeof(web_page_content), web_page_content);
-				send_data (strlen(web_page_content), web_page_content);
+				get_web_page_content("Web Page Title", main_content, links, content);
+				length = strlen(content);
+				// printf("Web page is %lu bytes:\n%s\n", sizeof(web_page_content), content);
 			}
 		}
 		// Load the file into memory and then send it		
@@ -266,12 +268,12 @@ int main ()
 		}
 		
 		// read the entire file content of the file pointed by fp
-		char *content = 0;
-		int length = get_file_size(fp);
-		content = malloc(length);
-		read_file(fp, content, length);
-
-		//
+		if (fp != NULL && content == NULL)
+		{
+			length = get_file_size(fp);
+			content = malloc(length);
+		    read_file(fp, content, length);
+		}
 		// parse_content_variables(...........);
 
 		// send the data to the client

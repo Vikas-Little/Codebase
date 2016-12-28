@@ -95,10 +95,8 @@ void parse_request_line (char *request_line, struct WebRequest *web_request, str
 	{
 		field_value[temp_index++] = request_line[line_index++];
 	}
-
 	
-
-	// printf ("FIELD NAME: %s, FIELD VALUE: %s\r\n", field_name, field_value);
+	 //printf ("FIELD NAME: %s, FIELD VALUE: %s\r\n", field_name, field_value);
 
 	// Start identifying and storing the requests
 	if (strcmp (field_name, "GET") == 0 || strcmp (field_name, "POST") == 0)
@@ -115,6 +113,7 @@ void parse_request_line (char *request_line, struct WebRequest *web_request, str
 			web_request->file[idx++] = field_value[temp_index];
 			temp_index++;
 		}
+
 
 		// Parse 'protocol' header
 		idx = 0;
@@ -246,15 +245,30 @@ void parse_request (struct WebRequest *web_request, char *request_buffer, struct
 
 	long content_length = strlen (request_buffer);
 	int content_index = 0, line_index = 0;
-
+	
+	// printf("request buffer is: %s", request_buffer);
 	while (content_index < content_length)
 	{
 		// Read till you reach end of line, keep carriage return '\r' but ignore new line '\n'
-		while (request_buffer[content_index] != '\n')
+		while (request_buffer[content_index] != '\n' && content_index < content_length)
 		{
 			request_line[line_index++] = request_buffer[content_index++];
 		}
-
+		/* For handling the POST request line!*/
+		if(strstr(request_line, "\r") == NULL && strstr(request_line, " ") == NULL)
+		{
+				char new_request_line[1000];
+				strcpy(new_request_line, "POST");
+				strcat(new_request_line, " /");
+				strcat(new_request_line, web_request->req_file);
+				strcat(new_request_line, "?");
+				strcat(new_request_line, request_line);
+				strcat(new_request_line, " ");
+				strcat(new_request_line, web_request->protocol);
+				strcat(new_request_line, "\r");
+				strcpy(request_line, new_request_line);
+		}
+		// printf("Request Line is: %s\r\n", request_line);
 		// Ignore the line '\r\n'
 		if (strlen (request_line) > 2)
 		{

@@ -86,7 +86,6 @@ int main()
 	} 
 	char *s = ch;
 	fclose(fp);
-	puts(s);
 	//str_replace(s);
 	return 0;
 }

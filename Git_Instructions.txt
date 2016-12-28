@@ -9,5 +9,4 @@
    (to commit (save) changes to the respository; <message> should describe briefly what change in the repository is being committed)
 8) git push (to update changes on to the server)
 9) git pull (to fetch the latest version of the repository)
-
-
+10) git delete <file_name> (to delete <file_name> from the repository)

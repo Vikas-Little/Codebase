@@ -21,6 +21,7 @@ int sockfd, newsockfd;
 struct sockaddr_in cl_addr, addr;
 char clientAddr[CLADDR_LEN];
 char buffer[BUF_SIZE];
+char Files_Array[200][256];
 
 struct WebRequest
 {

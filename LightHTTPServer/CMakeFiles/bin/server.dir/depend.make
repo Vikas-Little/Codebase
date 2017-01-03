@@ -3,6 +3,8 @@
 
 CMakeFiles/bin/server.dir/src/FileUtility.c.o: src/FileUtility.c
 CMakeFiles/bin/server.dir/src/FileUtility.c.o: src/FileUtility.h
+CMakeFiles/bin/server.dir/src/FileUtility.c.o: src/LightHTTPServer.h
+CMakeFiles/bin/server.dir/src/FileUtility.c.o: src/WebPage.h
 CMakeFiles/bin/server.dir/src/FileUtility.c.o: src/config.h
 
 CMakeFiles/bin/server.dir/src/LightHTTPServer.c.o: src/FileUtility.h

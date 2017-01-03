@@ -245,6 +245,13 @@ int main ()
 				 content = malloc(4000);
 				 get_directory_files(local_file_location);
 				 char main_content[200];
+				 int i = 0;
+				 printf("Contents in Files_Array:\r\n");
+				 for (i = 0; i < 10; i++)
+				 {
+					printf("%s\n", Files_Array[i]);
+				 }
+				 strcpy(main_content, Files_Array);
 				 struct WebLink links[4];		
 				
 				 strcpy (links[0].link_name, "Google");

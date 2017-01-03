@@ -4,6 +4,8 @@
 CMakeFiles/bin/server.dir/src/FileUtility.c.o
  /home/vikash/Documents/Codebase/LightHTTPServer/src/FileUtility.c
  /home/vikash/Documents/Codebase/LightHTTPServer/src/FileUtility.h
+ /home/vikash/Documents/Codebase/LightHTTPServer/src/LightHTTPServer.h
+ /home/vikash/Documents/Codebase/LightHTTPServer/src/WebPage.h
  /home/vikash/Documents/Codebase/LightHTTPServer/src/config.h
 CMakeFiles/bin/server.dir/src/LightHTTPServer.c.o
  /home/vikash/Documents/Codebase/LightHTTPServer/src/FileUtility.h

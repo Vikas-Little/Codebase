@@ -70,6 +70,8 @@ void get_directory_files(char local_file_location[])
 	while ((ent = readdir (dir)) != NULL)
 	{
 		printf ("%s\n", ent->d_name);
+		int i = 0;
+		strcpy(Files_Array[i++], ent->d_name);
 	}
 	closedir (dir);
 }

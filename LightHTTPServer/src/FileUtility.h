@@ -1,6 +1,7 @@
 #ifndef _FILEUTILITY_H
 #define _FILEUTILITY_H
 
+#include "LightHTTPServer.h"
 #include "config.h"
 #include <stdio.h>
 #include <string.h>

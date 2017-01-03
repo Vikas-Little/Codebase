@@ -6,7 +6,13 @@
 
 #IncludeRegexTransform: 
 
+/home/vikash/Documents/Codebase/LightHTTPServer/src/FileUtility.c
+FileUtility.h
 /home/vikash/Documents/Codebase/LightHTTPServer/src/FileUtility.h
+
+/home/vikash/Documents/Codebase/LightHTTPServer/src/FileUtility.h
+LightHTTPServer.h
+/home/vikash/Documents/Codebase/LightHTTPServer/src/LightHTTPServer.h
 config.h
 /home/vikash/Documents/Codebase/LightHTTPServer/src/config.h
 stdio.h
@@ -54,6 +60,18 @@ dirent.h
 sys/stat.h
 -
 stdio.h
+-
+
+/home/vikash/Documents/Codebase/LightHTTPServer/src/Parse.c
+Parse.h
+/home/vikash/Documents/Codebase/LightHTTPServer/src/Parse.h
+
+/home/vikash/Documents/Codebase/LightHTTPServer/src/Parse.h
+LightHTTPServer.h
+/home/vikash/Documents/Codebase/LightHTTPServer/src/LightHTTPServer.h
+stdio.h
+-
+string.h
 -
 
 /home/vikash/Documents/Codebase/LightHTTPServer/src/WebPage.h

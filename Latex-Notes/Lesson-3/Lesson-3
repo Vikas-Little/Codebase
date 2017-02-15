@@ -1,0 +1,58 @@
+
+Packages - Adding more functions to LaTeX!
+
+We can use packages in LaTeX to add more functions.
+
+LaTeX offers a lot of functions by default, but in some situations it can become in handy to use so called packages. To import a package in LaTeX, 
+you simply add the \usepackage directive to the preamble of your document:
+
+\documentclass{article}
+
+\usepackage{PACKAGENAME}
+
+\begin{document}
+
+...
+
+There are countless packages, all for different purposes.
+
+To typeset math, LaTeX offers (among others) an environment called equation.
+
+Everything inside this environment will be printed in math mode, a special typesetting environment for math.
+
+LaTeX also takes care of equation numbers for us:
+
+\documentclass{article}
+
+\begin{document}
+
+\begin{equation}
+  f(x) = x^2
+\end{equation}
+
+\end{document}
+
+The automatic numbering is a useful feature, but sometimes it's necessary to remove them for auxiliary calculations.
+
+LaTeX doesn't allow this by default, now we want to include a package that does:
+
+\documentclass{article}
+
+\usepackage{amsmath}
+
+\begin{document}
+
+\begin{equation*}
+  f(x) = x^4
+\end{equation*}
+
+\end{document}
+
+Now we get the same output as before, only the equation number is removed.
+
+Some Useful points:
+
+1. Packages add new functions to LaTeX.
+2. All packages must be included in the preamble.
+3. Packages add features such as support for pictures, links and bibliography.
+

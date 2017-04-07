@@ -22,6 +22,7 @@ struct sockaddr_in cl_addr, addr;
 char clientAddr[CLADDR_LEN];
 char buffer[BUF_SIZE];
 char Files_Array[200][256];
+int remove_status;
 
 struct WebRequest
 {
@@ -57,7 +58,7 @@ void accept_connection();
 
 void receive_data();
 
-void set_http_response(char req_file[]);
+void set_http_response(struct WebRequest *, char req_file[]);
 
 void send_data(int , char *);
 

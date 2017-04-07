@@ -1,6 +1,6 @@
 #include "Parse.h"
 
-void parse_field_data(struct WebRequest *web_request, struct WebForm *formData, char field_name[], char field_value[])
+void parse_form_field_data(struct WebRequest *web_request, struct WebForm *formData, char field_name[], char field_value[])
 {
 	if (strcmp (field_name, "fname") == 0)
 	{
@@ -34,19 +34,19 @@ int parse_form_field (char *query_string, char *field_name, char *field_value, i
 	
 	return -1;
 
-	int idx = field_index, tdx = 0;
+	int idx = field_index, content_index = 0;
 
 	while (query_string[idx] != '=')
 		{
-			field_name[tdx++] = query_string[idx];
+			field_name[content_index++] = query_string[idx];
 			idx++;
 		}
 
-	idx++, tdx = 0;
+	idx++, content_index = 0;
 
 	while (query_string[idx] != '&' && idx < strlen(query_string))
 		{
-			field_value[tdx++] = query_string[idx];
+			field_value[content_index++] = query_string[idx];
 			idx++;
 		}
 	
@@ -62,58 +62,34 @@ void parse_query_string (struct WebRequest *web_request, struct WebForm *formDat
 	strncpy (field_name, "", sizeof (field_name));
 	strncpy (field_value, "", sizeof (field_value));
 
-	field_index = parse_form_field(web_request->query_string, field_name, field_value, 0); // parsing the form fields.
+	field_index = parse_form_field(web_request->query_string, field_name, field_value, 0); // Parse the form fields
 	
 	while (field_index != -1)
 	{
-		parse_field_data(web_request, formData, field_name, field_value); // parsing the form field data.
+		parse_form_field_data(web_request, formData, field_name, field_value); // Parse the form field data
 		
 		strncpy (field_name, "", sizeof (field_name));
 		strncpy (field_value, "", sizeof (field_value));
 		
-		field_index = parse_form_field(web_request->query_string, field_name, field_value, field_index); // parsing the form fields.
+		field_index = parse_form_field(web_request->query_string, field_name, field_value, field_index);
 	}
 }
 
-void parse_request_line (char *request_line, struct WebRequest *web_request, struct WebForm *formData)
+void parse_request_line(struct WebRequest *web_request, char *field_name, char *field_value)
 {
-	int line_index = 0, temp_index = 0, idx = 0, tdx = 0;
-	char field_name[50], field_value[1000];
-	strncpy (field_name, "", sizeof (field_name));
-	strncpy (field_value, "", sizeof (field_value));						
-		
-	// Read till you read the first space
-	while (request_line[line_index] != ' ')
-	{
-		field_name[temp_index++] = request_line[line_index++];
-	}
-	line_index++;
-	
-	// Read till you read the end of line data
-	temp_index = 0;
-	while (request_line[line_index] != '\r')
-	{
-		field_value[temp_index++] = request_line[line_index++];
-	}
-	
-	 //printf ("FIELD NAME: %s, FIELD VALUE: %s\r\n", field_name, field_value);
-
-	// Start identifying and storing the requests
-	if (strcmp (field_name, "GET") == 0 || strcmp (field_name, "POST") == 0)
-	{
-		// Store 'http_method' header
+        // Store 'http_method' header
 		sprintf (web_request->http_method, "%s", field_name); 
 
 		// Parse 'file' and 'protocol' headers
-		temp_index = 1;
-		
+		int temp_index = 1;
+		int idx = 0;
+
 		// Parse 'file' header
 		while (field_value[temp_index] != ' ')
 		{
 			web_request->file[idx++] = field_value[temp_index];
 			temp_index++;
 		}
-
 
 		// Parse 'protocol' header
 		idx = 0;
@@ -125,47 +101,136 @@ void parse_request_line (char *request_line, struct WebRequest *web_request, str
 			temp_index++;
 		}
 		
-		// Checking whether the content in web_request->file contains the query string or not!
+		strcpy (web_request->req_file, web_request->file);
+}
+
+int create_req_file(struct WebRequest *web_request, char *request_message_line)
+{
+        int content_index = 0, line_index = 0; char temp_buffer[1000];
+        strncpy (temp_buffer, "", sizeof (temp_buffer));
+		int request_message_line_len = strlen(request_message_line);
+		
+		while (content_index < request_message_line_len)
+		{
+			temp_buffer[line_index++] = request_message_line[content_index++];
+		}
+
+        char PATH[50];
+        sprintf(PATH, "/home/vikash/Documents/Codebase/LightHTTPServer/web_root/%s", web_request->req_file);
+		//printf("PATH: %s\n", PATH);
+        
+		FILE *fp;
+		
+		fp = fopen(PATH, "a");
+        
+		if (fp == NULL)
+        {
+            printf("File does not exists!\n");
+            return;
+        }
+
+        fprintf(fp, "%s", request_message_line);
+
+        fclose(fp);
+		return 201;
+}
+
+void parse_request_message_line (char *request_message_line, struct WebRequest *web_request, struct WebForm *formData)
+{
+	int line_index = 0, temp_index = 0, idx = 0, content_index = 0;
+	char field_name[50], field_value[1000];
+	
+	strncpy (field_name, "", sizeof (field_name));
+	strncpy (field_value, "", sizeof (field_value));						
+
+	if (strcmp (web_request->http_method, "PUT") == 0 && strstr(request_message_line, "<") != NULL && strstr(request_message_line, ">") != NULL)
+	{
+		http_response = create_req_file(web_request, request_message_line);
+	}
+	
+	else
+	{
+		// Read till you see the first space
+		while (request_message_line[line_index] != ' ')
+		{
+			field_name[temp_index++] = request_message_line[line_index++];
+		}
+			line_index++;
+		
+		// Read till you come to the end of line data
+		temp_index = 0;
+		while (request_message_line[line_index] != '\r')
+		{
+			field_value[temp_index++] = request_message_line[line_index++];
+		}
+	}
+	
+	 //printf ("FIELD NAME: %s, FIELD VALUE: %s\r\n", field_name, field_value);
+
+	// Start identifying and storing the requests
+	if (strcmp (field_name, "GET") == 0 || strcmp (field_name, "POST") == 0)
+	{
+		
+		parse_request_line(web_request, field_name, field_value);
+			
+		// Checking whether the content in web_request->file has the query string or not
 		const char needle = '?';
 		char *ret;
 
  		// Look for the presence of '?'
 		ret = strchr (web_request->file, needle);
 
-		// If query string is present in web_request->file, then segregate the file name & the query string.
+		// If the query string is present in web_request->file, then segregate the file name & the query string
 		if (ret > 0)
 		{
-			
 			// Parse the 'file' header
-			idx = 0; tdx = 0;
+			idx = 0; content_index = 0;
+			strncpy (web_request->req_file, "", sizeof (web_request->req_file));
+
 			while (web_request->file[idx] != '?')
 			{
-				web_request->req_file[tdx++] = web_request->file[idx];
+				web_request->req_file[content_index++] = web_request->file[idx];
 				idx++;
 			}
 			
-			idx++, tdx = 0;
+			idx++, content_index = 0;
 
 			while (idx < strlen(web_request->file))
 			{
-				web_request->query_string[tdx++] = web_request->file[idx];
+				web_request->query_string[content_index++] = web_request->file[idx];
 				idx++;
 			}
 
-			idx++, tdx = 0;
+			idx++, content_index = 0;
 
-			parse_query_string (web_request, formData); // Parse the segregated query string.
+			parse_query_string (web_request, formData); // Parse the segregated query string
 
 		}
+
 		else
 		{			
-			strcpy (web_request->req_file, web_request->file);
+			// do nothing
 		}
 	
 		/*printf ("FILE: %s, PROTOCOL: %s\r\n", web_request->file, web_request->protocol);
 
 		*/
+	}
+
+	else if (strcmp (field_name, "DELETE") == 0)
+	{
+		parse_request_line(web_request, field_name, field_value);
 		
+		// delete the requested file
+		remove_status = delete_requested_file(web_request, web_request->req_file);
+	}
+	
+	else if (strcmp (field_name, "PUT") == 0)
+	{
+        parse_request_line(web_request, field_name, field_value);
+
+		// delete the previously existing file which has the same name as the requested file
+		delete_prev_existing_file(web_request, web_request->req_file);
 	}
 
 	else if (strcmp (field_name, "Host:") == 0)
@@ -182,51 +247,52 @@ void parse_request_line (char *request_line, struct WebRequest *web_request, str
 	{
 		sprintf (web_request->accept_encoding, "%s", field_value); 
 	}
-        else if (strcmp (field_name, "Referer:") == 0)
+    
+	else if (strcmp (field_name, "Referer:") == 0)
 	{
 		sprintf (web_request->referer, "%s", field_value); 
 	}
-        else if (strcmp (field_name, "User-Agent:") == 0)
+    
+	else if (strcmp (field_name, "User-Agent:") == 0)
 	{
 		sprintf (web_request->user_agent, "%s", field_value); 
 	}
 
-        else if (strcmp (field_name, "Accept-Language:") == 0)
+    else if (strcmp (field_name, "Accept-Language:") == 0)
 	{
 		sprintf (web_request->accept_language, "%s", field_value); 
 	}
 
-        else if (strcmp (field_name, "Upgrade-Insecure-Requests:") == 0)
+    else if (strcmp (field_name, "Upgrade-Insecure-Requests:") == 0)
 	{
 		sprintf (web_request->upgrade_insecure_requests, "%s", field_value); 
 	}
 
-        else if (strcmp (field_name, "Cache-Control:") == 0)
+    else if (strcmp (field_name, "Cache-Control:") == 0)
 	{
 		sprintf (web_request->cache_control, "%s", field_value); 
 	}
 
-        else if (strcmp (field_name, "Pragma:") == 0)
+    else if (strcmp (field_name, "Pragma:") == 0)
 	{
 		sprintf (web_request->pragma, "%s", field_value); 
-	}
-
+	}	
 }
 
 void parse_request (struct WebRequest *web_request, char *request_buffer, struct WebForm *formData)
 {
 	// A string to hold one line of data from the request buffer, initialize the string to be an empty string
-	char request_line[1000];
+	char request_message_line[1000];
+	strncpy (request_message_line, "", sizeof (request_message_line));
 
-	// Initialize WebForm structure elements
+	// Initialize the WebForm structure elements as an empty string
 	strncpy (formData->first_name, "", sizeof (formData->first_name));
 	strncpy (formData->last_name, "", sizeof (formData->last_name));
 	strncpy (formData->age, "", sizeof (formData->age));
 	strncpy (formData->email, "", sizeof (formData->email));
 	strncpy (formData->address, "", sizeof (formData->address));
 
-	// Initialize WebRequest structure elements
-	strncpy (request_line, "", sizeof (request_line));
+	// Initialize the WebRequest structure elements as an empty string
 	strncpy (web_request->http_method, "", sizeof (web_request->http_method));
 	strncpy (web_request->query_string, "", sizeof (web_request->query_string));
 	strncpy (web_request->file, "", sizeof (web_request->file));
@@ -246,60 +312,63 @@ void parse_request (struct WebRequest *web_request, char *request_buffer, struct
 	long content_length = strlen (request_buffer);
 	int content_index = 0, line_index = 0;
 	
-	// printf("request buffer is: %s", request_buffer);
+	// printf("REQUEST BUFFER: %s", request_buffer);
 	while (content_index < content_length)
 	{
 		// Read till you reach end of line, keep carriage return '\r' but ignore new line '\n'
 		while (request_buffer[content_index] != '\n' && content_index < content_length)
 		{
-			request_line[line_index++] = request_buffer[content_index++];
+			request_message_line[line_index++] = request_buffer[content_index++];
 		}
-		/* For handling the POST request line!*/
-		if(strstr(request_line, "\r") == NULL && strstr(request_line, " ") == NULL)
+
+		// Handle the POST request line
+		if(strstr(request_message_line, "\r") == NULL && strstr(request_message_line, " ") == NULL)
 		{
-				char new_request_line[1000];
-				strcpy(new_request_line, "POST");
-				strcat(new_request_line, " /");
-				strcat(new_request_line, web_request->req_file);
-				strcat(new_request_line, "?");
-				strcat(new_request_line, request_line);
-				strcat(new_request_line, " ");
-				strcat(new_request_line, web_request->protocol);
-				strcat(new_request_line, "\r");
-				strcpy(request_line, new_request_line);
+				char temp_var[1000];
+				strcpy(temp_var, "POST");
+				strcat(temp_var, " /");
+				strcat(temp_var, web_request->req_file);
+				strcat(temp_var, "?");
+				strcat(temp_var, request_message_line);
+				strcat(temp_var, " ");
+				strcat(temp_var, web_request->protocol);
+				strcat(temp_var, "\r");
+				strcpy(request_message_line, temp_var);
 		}
-		// printf("Request Line is: %s\r\n", request_line);
+		
+		//printf("REQUEST MESSAGE LINE: %s\r\n", request_message_line);
 		// Ignore the line '\r\n'
-		if (strlen (request_line) > 2)
+		if (strlen (request_message_line) > 2)
 		{
-			// printf ("REQUEST LINE: %s\r\n", request_line);
-			parse_request_line (request_line, web_request, formData);
+			//printf ("REQUEST MESSAGE LINE: %s\r\n", request_message_line);
+			parse_request_message_line (request_message_line, web_request, formData);
 		}
 
 		// Re-initialize to empty string and reset line index	
-		strncpy (request_line, "", sizeof (request_line));
+		strncpy (request_message_line, "", sizeof (request_message_line));
 		line_index = 0;
 
 		// Move to the next character
 		content_index++;
 	}
+
 }
 
 void print_request (struct WebRequest *web_request, struct WebForm *formData)
 {
 	printf ("PRINTING RECEIVED WEB REQUEST:\r\n");
-    printf ("Host: 			%s\r\n", web_request->host);
+    printf ("Host: 		        %s\r\n", web_request->host);
 	printf ("HTTP Method: 		%s\r\n", web_request->http_method);
 	printf ("Request File: 		%s\r\n", web_request->req_file);
 	printf ("Request Protocol: 	%s\r\n", web_request->protocol);
 	printf ("Connection: 		%s\r\n", web_request->connection_type);
 	printf ("Accept-Encoding: 	%s\r\n", web_request->accept_encoding);
-	printf ("Referer: 		%s\r\n", web_request->referer);
+	printf ("Referer: 		    %s\r\n", web_request->referer);
 	printf ("User-Agent: 		%s\r\n", web_request->user_agent);
 	printf ("Accept-Language: 	%s\r\n", web_request->accept_language);
 	printf ("Upgrade-Insecure-Requests: %s\r\n", web_request->upgrade_insecure_requests);
 	printf ("Cache-Control: 	%s\r\n", web_request->cache_control);
-	printf ("Pragma: 		%s\r\n", web_request->pragma);
+	printf ("Pragma: 			%s\r\n", web_request->pragma);
 
 	printf("\nPRINTING QUERY STRING PARAMETERS:\n");
 	printf("First Name:		%s\r\n", formData->first_name);

@@ -11,7 +11,6 @@ void get_web_page_content(char title[], char main_content[], struct WebLink link
 										"<title>%s</title>"
 				  					"</head>", new_page.title);
 
-
 	sprintf(new_page.nav_bar, 	"<body>"
 									"<div id=\"nav\">");
 
@@ -27,10 +26,9 @@ void get_web_page_content(char title[], char main_content[], struct WebLink link
 								  		"</div>", new_page.navigation_links[i].link_address, new_page.navigation_links[i].link_name);
 			strcat(new_page.nav_bar, temp_str);
 	}
+	
 	strcat(new_page.nav_bar, 	"</div>");
 	
-
-
 	sprintf(new_page.content, "<div id=\"content\">%s</div>", main_content);
 
 	sprintf(new_page.footer,		"<div id=\"footer\">"
@@ -44,5 +42,4 @@ void get_web_page_content(char title[], char main_content[], struct WebLink link
 	strcat(web_page_content, new_page.nav_bar);
 	strcat(web_page_content, new_page.content);
 	strcat(web_page_content, new_page.footer);
-
 }

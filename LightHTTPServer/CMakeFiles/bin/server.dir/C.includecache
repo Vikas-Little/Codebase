@@ -27,6 +27,8 @@ errno.h
 -
 stdbool.h
 -
+unistd.h
+-
 
 /home/vikash/Documents/Codebase/LightHTTPServer/src/LightHTTPServer.c
 LightHTTPServer.h

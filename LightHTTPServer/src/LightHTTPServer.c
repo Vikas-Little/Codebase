@@ -306,7 +306,7 @@ int main ()
 		char *content = 0;
 		int length;
 		char local_file_location[200];
-		sprintf(local_file_location, "/home/vikash/Documents/Codebase/LightHTTPServer/web_root/%s", new_request.req_file);
+		sprintf(local_file_location, WEB_ROOT_DIR"%s", new_request.req_file);
 
 		if (is_directory(local_file_location))
 		{

@@ -1,1 +1,0 @@
-/usr/bin/cc      CMakeFiles/bin/server.dir/src/LightHTTPServer.c.o CMakeFiles/bin/server.dir/src/Parse.c.o CMakeFiles/bin/server.dir/src/FileUtility.c.o CMakeFiles/bin/server.dir/src/WebPage.c.o  -o bin/server -rdynamic 

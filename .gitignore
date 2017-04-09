@@ -1,1 +1,8 @@
 *~
+LightHTTPServer/CMakeCache.txt
+LightHTTPServer/cmake_install.cmake
+LightHTTPServer/Makefile
+LightHTTPServer/CMakeFiles
+LightHTTPServer/CMakeFiles/*
+LightHTTPServer/bin/*
+LightHTTPServer/src/config.h

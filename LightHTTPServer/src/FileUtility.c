@@ -25,7 +25,7 @@ FILE* get_requested_file_pointer(struct WebRequest *web_request, char req_file[]
 		{
 			if (remove_status == 0)
 			{
-				char PATH[] = "/home/vikash/Documents/Codebase/LightHTTPServer/web_root/delete_200_ok.html";
+				char PATH[] = WEB_ROOT_DIR"delete_200_ok.html";
 			
 				fp = fopen(PATH, "rb");
 
@@ -39,7 +39,7 @@ FILE* get_requested_file_pointer(struct WebRequest *web_request, char req_file[]
 			
 			else
 			{
-				char PATH[] = "/home/vikash/Documents/Codebase/LightHTTPServer/web_root/404.html";
+				char PATH[] = WEB_ROOT_DIR"404.html";
 			
 				fp = fopen(PATH, "rb");
 
@@ -54,7 +54,7 @@ FILE* get_requested_file_pointer(struct WebRequest *web_request, char req_file[]
 
 		else if (strcmp (web_request->http_method, "PUT") == 0)
 		{
-				sprintf(NEW_PATH, "/home/vikash/Documents/Codebase/LightHTTPServer/web_root/%s", web_request->req_file);
+				sprintf(NEW_PATH, WEB_ROOT_DIR"%s", web_request->req_file);
 			
 				fp = fopen(NEW_PATH, "rb");
 
@@ -151,7 +151,7 @@ bool is_directory(char local_file_location[])
 void delete_prev_existing_file(struct WebRequest *web_request, char req_file[])
 {
 	    char PATH[200];
-		sprintf(PATH, "/home/vikash/Documents/Codebase/LightHTTPServer/web_root/%s", web_request->req_file);
+		sprintf(PATH, WEB_ROOT_DIR"%s", web_request->req_file);
         
         if (access( PATH, F_OK ) != -1)
 		{
@@ -162,7 +162,7 @@ void delete_prev_existing_file(struct WebRequest *web_request, char req_file[])
 int delete_requested_file(struct WebRequest *web_request, char req_file[])
 {
 	    char PATH[200];
-        sprintf(PATH, "/home/vikash/Documents/Codebase/LightHTTPServer/web_root/%s", web_request->req_file);
+        sprintf(PATH, WEB_ROOT_DIR"%s", web_request->req_file);
 
 		int status = remove(PATH);
 

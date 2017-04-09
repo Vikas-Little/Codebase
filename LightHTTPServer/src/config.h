@@ -1,7 +1,7 @@
 #ifndef _CONFIG_H
 #define _CONFIG_H
 
-#define WEB_ROOT_DIR    "/home/vikash/Documents/Codebase/LightHTTPServer/web_root/"
+#define WEB_ROOT_DIR    "/home/ubuntu/Codebase/LightHTTPServer/web_root/"
 #define PORT            4444
 #define BUF_SIZE        4000
 #define CLADDR_LEN      100

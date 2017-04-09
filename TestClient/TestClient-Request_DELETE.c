@@ -22,11 +22,11 @@ int main(int argc, char *argv[])
     struct sockaddr_in serv_addr;
     struct hostent *server;
     char buffer[BUF_SIZE];
-    char DELETE_REQUEST[] =                 "DELETE /hello.htm HTTP/1.1\r\n"
+    char DELETE_REQUEST[] =                 "DELETE /hello.html HTTP/1.1\r\n"
                                             "User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36\r\n"
                                             "Host: 127.0.0.1:4444\r\n"
                                             "Accept-Language: en-GB,en-US;q=0.8,en;q=0.6\r\n"
-                                            "Connection: keep-alive\r\n";
+                                            "Connection: keep-alive\r\n\r\n";
     
     if (argc < 3)
     {

@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <time.h>
 #include <errno.h>
 #include <dirent.h>
 #include <sys/stat.h>
@@ -23,6 +24,9 @@ char clientAddr[CLADDR_LEN];
 char buffer[BUF_SIZE];
 char Files_Array[200][256];
 int remove_status;
+char current_tm_dt[50];
+char file_mod_status[100];
+char response_header[1000];
 
 struct WebRequest
 {

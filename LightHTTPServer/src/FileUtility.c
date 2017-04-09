@@ -1,5 +1,14 @@
 #include "FileUtility.h"
 
+void display_current_time_date()
+{
+	strncpy(current_tm_dt,"",sizeof(current_tm_dt));
+	time_t t;
+    time(&t);
+	strcpy(current_tm_dt, ctime(&t));
+	//printf("Date: %s\r\n", current_tm_dt);
+}
+
 void read_file (FILE *fp, char content[], long length)
 {
 	// Read the entire file content of the file pointed by fp
@@ -64,6 +73,20 @@ FILE* get_requested_file_pointer(struct WebRequest *web_request, char req_file[]
 				}
 		}
 
+		else if (strcmp (web_request->http_method, "HEAD") == 0)
+		{
+				sprintf(NEW_PATH, "/home/vikash/Documents/Codebase/LightHTTPServer/web_root/%s", web_request->req_file);
+			
+				fp = fopen(NEW_PATH, "rb");
+
+				if (fp == NULL)
+				{
+					printf("Error opening file: %s: %d, %s\r\n", NEW_PATH, errno, strerror(errno));
+				}
+
+				http_response = HTTP_RESPONSE_HEAD;
+		}
+
 		else 
 		{
 			// Check if requested url is "", so open index.html
@@ -88,7 +111,6 @@ FILE* get_requested_file_pointer(struct WebRequest *web_request, char req_file[]
 					{
 						printf("Error opening file: %s: %d, %s\r\n", local_file_location, errno, strerror(errno));
 					}
-				
 			}
 			
 			// If the requested file is not present in web_root, then serve 404.html
@@ -163,7 +185,7 @@ int delete_requested_file(struct WebRequest *web_request, char req_file[])
 {
 	    char PATH[200];
         sprintf(PATH, "/home/vikash/Documents/Codebase/LightHTTPServer/web_root/%s", web_request->req_file);
-
+		
 		int status = remove(PATH);
 
         if (status == 0)
@@ -179,4 +201,18 @@ int delete_requested_file(struct WebRequest *web_request, char req_file[])
         }
 
 		return status;
+}
+
+void file_modification_status(struct WebRequest *web_request)
+{
+    struct stat sb;
+    char PATH[200];
+    sprintf(PATH, "/home/vikash/Documents/Codebase/LightHTTPServer/web_root/%s", web_request->req_file);
+	strncpy(file_mod_status,"",sizeof(file_mod_status));
+	
+    if (!stat(PATH, &sb))
+    {
+        strftime(file_mod_status, 100, "%d/%m/%Y %H:%M:%S", localtime( &sb.st_mtime));
+    }
+	//printf("Last modified %s: %s\r\n", web_request->req_file, file_mod_status);
 }

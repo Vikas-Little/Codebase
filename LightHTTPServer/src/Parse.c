@@ -102,6 +102,7 @@ void parse_request_line(struct WebRequest *web_request, char *field_name, char *
 		}
 		
 		strcpy (web_request->req_file, web_request->file);
+		file_modification_status(web_request);
 }
 
 int create_req_file(struct WebRequest *web_request, char *request_message_line)
@@ -168,7 +169,7 @@ void parse_request_message_line (char *request_message_line, struct WebRequest *
 	 //printf ("FIELD NAME: %s, FIELD VALUE: %s\r\n", field_name, field_value);
 
 	// Start identifying and storing the requests
-	if (strcmp (field_name, "GET") == 0 || strcmp (field_name, "POST") == 0)
+	if (strcmp (field_name, "GET") == 0 || strcmp (field_name, "POST") == 0 || strcmp (field_name, "HEAD") == 0)
 	{
 		
 		parse_request_line(web_request, field_name, field_value);
@@ -312,7 +313,7 @@ void parse_request (struct WebRequest *web_request, char *request_buffer, struct
 	long content_length = strlen (request_buffer);
 	int content_index = 0, line_index = 0;
 	
-	// printf("REQUEST BUFFER: %s", request_buffer);
+	//printf("REQUEST BUFFER: %s", request_buffer);
 	while (content_index < content_length)
 	{
 		// Read till you reach end of line, keep carriage return '\r' but ignore new line '\n'
@@ -336,11 +337,11 @@ void parse_request (struct WebRequest *web_request, char *request_buffer, struct
 				strcpy(request_message_line, temp_var);
 		}
 		
-		//printf("REQUEST MESSAGE LINE: %s\r\n", request_message_line);
+		// printf("REQUEST MESSAGE LINE: %s\r\n", request_message_line);
 		// Ignore the line '\r\n'
 		if (strlen (request_message_line) > 2)
 		{
-			//printf ("REQUEST MESSAGE LINE: %s\r\n", request_message_line);
+			// printf ("REQUEST MESSAGE LINE: %s\r\n", request_message_line);
 			parse_request_message_line (request_message_line, web_request, formData);
 		}
 
@@ -363,7 +364,7 @@ void print_request (struct WebRequest *web_request, struct WebForm *formData)
 	printf ("Request Protocol: 	%s\r\n", web_request->protocol);
 	printf ("Connection: 		%s\r\n", web_request->connection_type);
 	printf ("Accept-Encoding: 	%s\r\n", web_request->accept_encoding);
-	printf ("Referer: 		    %s\r\n", web_request->referer);
+	printf ("Referer: 		%s\r\n", web_request->referer);
 	printf ("User-Agent: 		%s\r\n", web_request->user_agent);
 	printf ("Accept-Language: 	%s\r\n", web_request->accept_language);
 	printf ("Upgrade-Insecure-Requests: %s\r\n", web_request->upgrade_insecure_requests);

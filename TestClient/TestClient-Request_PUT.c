@@ -22,18 +22,20 @@ int main(int argc, char *argv[])
     struct sockaddr_in serv_addr;
     struct hostent *server;
     char buffer[BUF_SIZE];
-    char PUT_REQUEST[] =                    "PUT /Sample.htm HTTP/1.1\r\n"
+    char PUT_REQUEST[] =                    "PUT /New.html HTTP/1.1\r\n"
                                             "User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36\r\n"
                                             "Host: 127.0.0.1:4444\r\n"
                                             "Accept-Language: en-GB,en-US;q=0.8,en;q=0.6\r\n"
                                             "Connection: keep-alive\r\n"
                                             "Content-type: text/html\r\n"
                                             "Content-Length: 182\r\n"
+                                            "\r\n"
                                             "<html>\r\n"
                                             "<body>\r\n"
-                                            "<h1>201 Created</h1>\r\n"
+                                            "<h1>Hello, World!</h1>\r\n"
                                             "</body>\r\n"
-                                            "</html>\r\n";
+                                            "</html>\r\n\r\n";
+    
     if (argc < 3)
     {
        fprintf(stderr,"usage %s hostname port\n", argv[0]);

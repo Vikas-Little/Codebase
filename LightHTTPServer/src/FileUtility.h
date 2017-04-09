@@ -25,8 +25,8 @@ FILE* check_dir_index_file(char local_file_location[]);
 
 bool is_directory(char local_file_location[]);
 
-void delete_prev_existing_file(struct WebRequest *, char req_file[]);
+//void delete_prev_existing_file(struct WebRequest *, char req_file[]);
 
-int delete_requested_file(struct WebRequest *, char req_file[]);
+//int delete_requested_file(struct WebRequest *, char req_file[]);
 
 #endif

@@ -3,40 +3,59 @@
 
 int http_response = HTTP_RESPONSE_OK;
 
-char response_header_ok[] = "HTTP/1.0 200 OK\r\n"
-                            "Server: LightHTTPServer/1.0\r\n"
-                            "Connection: close\r\n"
-                            "Max-Age: 0\r\n"
-                            "Expires: 0\r\n"
-                            "Cache-Control: no-cache, private\r\n"
-                            "Pragma: no-cache\r\n"
-                            "Content-Type: text/html\r\n\r\n";
+char default_200_ok_status_line[] = "HTTP/1.1 200 OK\r\n";
+char put_201_created_status_line[] = "HTTP/1.1 201 Created\r\n";
+char not_found_404_status_line[] = "HTTP/1.1 404 NOT FOUND\r\n";
 
-char response_header_delete_200_ok[] =  "HTTP/1.1 200 OK\r\n"
-										"Server: LightHTTPServer/1.0\r\n"
-										"Content-Type: text/html\r\n"
+char default_200_ok_res_hdr_bdy[] = "Content-Type: text/html\r\n"
+									"Connection: close\r\n"
+									"Max-Age: 0\r\n"
+									"Expires: 0\r\n"
+									"Cache-Control: no-cache, private\r\n"
+									"Pragma: no-cache\r\n\r\n";
+
+char head_200_ok_res_hdr_bdy[] =	"Content-Type: text/html\r\n"
+									"Vary: Authorization,Accept\r\n"
+									"Accept-Ranges: bytes\r\n"
+									"Content-length: 1598\r\n"
+									"Connection: close\r\n\r\n";
+
+char delete_200_ok_res_hdr_bdy[] =	"Content-Type: text/html\r\n"
+									"Connection: close\r\n"
+									"Content-length: 30\r\n"
+									"\r\n"
+									"<html>\r\n"
+									"<body>\r\n"
+									"<h1>URL deleted.</h1>\r\n"
+									"</body>\r\n"
+									"</html>\r\n\r\n";
+
+char put_201_created_res_hdr_bdy[] = 	"Content-Type: text/html\r\n"
 										"Connection: close\r\n"
 										"Content-length: 30\r\n"
 										"\r\n"
 										"<html>\r\n"
 										"<body>\r\n"
-										"<h1>URL deleted.</h1>\r\n"
+										"<h1>The file was created/updated.</h1>\r\n"
 										"</body>\r\n"
 										"</html>\r\n\r\n";
 
-char response_header_put_201_created[] =  "HTTP/1.1 201 Created\r\n"
-										  "Server: LightHTTPServer/1.0\r\n"
-										  "Content-Type: text/html\r\n"
-										  "Connection: close\r\n"
-										  "Content-length: 30\r\n"
-										  "\r\n"
-										  "<html>\r\n"
-										  "<body>\r\n"
-										  "<h1>The file was created/updated.</h1>\r\n"
-										  "</body>\r\n"
-										  "</html>\r\n\r\n";
+char not_found_404_res_hdr_bdy[] = 	"Connection: close\r\n"
+									"Max-Age: 0\r\n"
+									"Expires: 0\r\n"
+									"Cache-Control: no-cache, private\r\n"
+									"Pragma: no-cache\r\n"
+									"Content-Type: text/html\r\n\r\n";
 
-char response_header_content_css[] =	"HTTP/1.0 200 OK\r\n"
+char content_inline_res_hdr_bdy[] = "Connection: close\r\n"
+									"Max-Age: 0\r\n"
+									"Expires: 0\r\n"
+									"Cache-Control: no-cache, private\r\n"
+									"Pragma: no-cache\r\n"
+									"Content-Type: application/pdf\r\n"
+									"Content-Disposition: inline\r\n\r\n";
+
+char response_header_content_css[] =	"HTTP/1.1 200 OK\r\n"
 										"Server: LightHTTPServer/1.0\r\n"
 										"Connection: close\r\n"
 										"Max-Age: 0\r\n"
@@ -45,16 +64,7 @@ char response_header_content_css[] =	"HTTP/1.0 200 OK\r\n"
 										"Pragma: no-cache\r\n"
 										"Content-Type: text/css\r\n\r\n";
 
-char response_header_res_not_found[] =  "HTTP/1.1 404 NOT FOUND\r\n"
-										"Server: LightHTTPServer/1.0\r\n"
-										"Connection: close\r\n"
-										"Max-Age: 0\r\n"
-										"Expires: 0\r\n"
-										"Cache-Control: no-cache, private\r\n"
-										"Pragma: no-cache\r\n"
-										"Content-Type: text/html\r\n\r\n";
-
-char response_header_file_attachment[] =    "HTTP/1.0 200 OK\r\n"
+char response_header_file_attachment[] =    "HTTP/1.1 200 OK\r\n"
                                             "Server: LightHTTPServer/1.0\r\n"
                                             "Connection: close\r\n"
                                             "Max-Age: 0\r\n"
@@ -63,17 +73,6 @@ char response_header_file_attachment[] =    "HTTP/1.0 200 OK\r\n"
                                             "Pragma: no-cache\r\n"
                                             "Content-Type: application/download\r\n"  
                                             "Content-Disposition: attachment\r\n\r\n";
-
-char response_header_file_inline[] =    "HTTP/1.0 200 OK\r\n"
-                                        "Server: LightHTTPServer/1.0\r\n"
-                                        "Connection: close\r\n"
-                                        "Max-Age: 0\r\n"
-                                        "Expires: 0\r\n"
-                                        "Cache-Control: no-cache, private\r\n"
-                                        "Pragma: no-cache\r\n"
-                                        "Content-Type: application/pdf\r\n"
-                                        "Content-Disposition: inline\r\n\r\n";
-
 
 void start_server()
 {
@@ -146,7 +145,7 @@ void set_http_response(struct WebRequest *web_request, char req_file[])
 
 			if (strcmp (r, ".pdf") == 0)
 			{
-				http_response = HTTP_RESPONSE_FILE_PDF;
+				http_response = HTTP_RESPONSE_CONTENT_INLINE;
 			}
 			
 			else if (strcmp (r, ".html") == 0)
@@ -174,24 +173,52 @@ void send_data(int length, char *content)
 		printf("Error sending data: %d, %s\n", errno, strerror(errno));  
 		exit(1);  
 	}
-
+}
+ 
+void construct_response_header(char str1[], char str5[])
+{
+    display_current_time_date();
+	char temp[100], str2[100], str4[100];
+	strncpy(str2,"",sizeof(str2)); strncpy(temp,"",sizeof(temp)); strncpy(str4,"",sizeof(str4));
+	strncpy(response_header,"",sizeof(response_header));
+    sprintf(str2, "Date: %s", current_tm_dt);
+    int content_index = 0, line_index = 0;
+    while (str2[content_index] != '\n')
+    {
+        temp[line_index++] = str2[content_index++];
+    }
+    strcpy(str2, temp);
+    strcat(str2, "\r\n");    
+    char str3[] = "Server: LightHTTPServer/1.0\r\n";
+    sprintf(str4, "Last-Modified: %s\r\n", file_mod_status);
+    strcpy(response_header, str1);
+    strcat(response_header, str2);
+    strcat(response_header, str3);
+    strcat(response_header, str4);
+	/*sprintf(content_length, "Content-Length: %d\r\n", length);
+	strcat(response_header, content_length);*/
+	strcat(response_header, str5);
+	printf("%s", response_header);
 }
 
 void send_header()
 {
 	if (http_response == HTTP_RESPONSE_NOT_FOUND)
 	{
-		send_data (sizeof(response_header_res_not_found), response_header_res_not_found);
+		construct_response_header(not_found_404_status_line, not_found_404_res_hdr_bdy);
+		send_data (sizeof(response_header), response_header);
 	}
 	
 	else if (http_response == HTTP_RESPONSE_OK)
 	{
-		send_data (sizeof(response_header_ok), response_header_ok);
+		construct_response_header(default_200_ok_status_line, default_200_ok_res_hdr_bdy);
+		send_data (sizeof(response_header), response_header);
 	}
 	
-	else if (http_response == HTTP_RESPONSE_FILE_PDF)
+	else if (http_response == HTTP_RESPONSE_CONTENT_INLINE)
 	{
-		send_data (sizeof(response_header_file_inline), response_header_file_inline);
+		construct_response_header(default_200_ok_status_line, content_inline_res_hdr_bdy);
+		send_data (sizeof(response_header), response_header);
 	}
 	
 	else if (http_response == HTTP_RESPONSE_FILE_OTHER)
@@ -206,14 +233,22 @@ void send_header()
 
 	else if (http_response == HTTP_RESPONSE_DELETE)
 	{
-		send_data (sizeof(response_header_delete_200_ok), response_header_delete_200_ok);
+		construct_response_header(default_200_ok_status_line, delete_200_ok_res_hdr_bdy);
+		send_data (sizeof(response_header), response_header);
 	}
 
 	else if (http_response == HTTP_RESPONSE_PUT)
 	{
-		send_data (sizeof(response_header_put_201_created), response_header_put_201_created);
+		construct_response_header(put_201_created_status_line, put_201_created_res_hdr_bdy);
+		send_data (sizeof(response_header), response_header);
 	}
-}	
+
+	else if (http_response == HTTP_RESPONSE_HEAD)
+	{
+		construct_response_header(default_200_ok_status_line, head_200_ok_res_hdr_bdy);
+		send_data (sizeof(response_header), response_header);
+	}
+}
 
 void quitproc (int sig_num)
 {
@@ -314,16 +349,20 @@ int main ()
 			fp = get_requested_file_pointer(&new_request, new_request.req_file, local_file_location);
 		}
 		
-		// read the entire content of the file pointed by fp
-		if (fp != NULL && content == NULL)
+		if (strcmp (new_request.http_method, "HEAD") != 0)
 		{
-			length = get_file_size(fp);
-			content = malloc(length);
-		    read_file(fp, content, length);
+			// read the entire content of the file pointed by fp
+			if (fp != NULL && content == NULL)
+			{
+				length = get_file_size(fp);
+				content = malloc(length);
+				read_file(fp, content, length);
+			}
 		}
 		
 		// send data to the client
 		send_header();
+		//printf("length: %d, content: %s\r\n", length, content);
 		send_data (length, content);
 
         break;

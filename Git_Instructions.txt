@@ -1,0 +1,24 @@
+
+Some basic git instructions are as follows:
+
+1) git clone https://github.com/Vikas-Little/Codebase.git </path/to/folder_name>
+   - to clone the repository from the server into your local folder </path/to/folder_name>
+
+2) git status (to check the status of the present directory against the repository)
+
+3) git add <file_name> (to add an untracked file <file_name> into the repository)
+
+4) git add </path/to/folder>/* e.g. git add LightHTTPServer/* (to add all contents of the directory </path/to/folder> into the repository)
+
+5) git config --global user.email "vikas.little@gmail.com" (to configure the repository owners's email)
+
+6) git config --global user.name "Vikas Upadhyay" (to configure the repository owner's name)
+
+7) git commit -a -m "<message>"
+   (to commit (save) changes to the respository; <message> should describe briefly what changes in the repository are being committed)
+
+8) git push (to push changes on to the server)
+
+9) git pull (to fetch the latest version of the code from the repository)
+
+10) git delete <file_name> (to delete <file_name> from the repository)

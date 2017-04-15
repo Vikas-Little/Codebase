@@ -75,7 +75,7 @@ FILE* get_requested_file_pointer(struct WebRequest *web_request, char req_file[]
 
 		else if (strcmp (web_request->http_method, "HEAD") == 0)
 		{
-				sprintf(NEW_PATH, "/home/vikash/Documents/Codebase/LightHTTPServer/web_root/%s", web_request->req_file);
+				sprintf(NEW_PATH, WEB_ROOT_DIR"%s", web_request->req_file);
 			
 				fp = fopen(NEW_PATH, "rb");
 
@@ -184,13 +184,7 @@ void delete_prev_existing_file(struct WebRequest *web_request, char req_file[])
 int delete_requested_file(struct WebRequest *web_request, char req_file[])
 {
 	    char PATH[200];
-<<<<<<< HEAD
-        sprintf(PATH, "/home/vikash/Documents/Codebase/LightHTTPServer/web_root/%s", web_request->req_file);
-		
-=======
         sprintf(PATH, WEB_ROOT_DIR"%s", web_request->req_file);
-
->>>>>>> 64a53322e9217a08d4e704d7046b177d2ecf6fd5
 		int status = remove(PATH);
 
         if (status == 0)
@@ -207,13 +201,12 @@ int delete_requested_file(struct WebRequest *web_request, char req_file[])
 
 		return status;
 }
-<<<<<<< HEAD
 
 void file_modification_status(struct WebRequest *web_request)
 {
     struct stat sb;
     char PATH[200];
-    sprintf(PATH, "/home/vikash/Documents/Codebase/LightHTTPServer/web_root/%s", web_request->req_file);
+    sprintf(PATH, WEB_ROOT_DIR"%s", web_request->req_file);
 	strncpy(file_mod_status,"",sizeof(file_mod_status));
 	
     if (!stat(PATH, &sb))
@@ -222,5 +215,3 @@ void file_modification_status(struct WebRequest *web_request)
     }
 	//printf("Last modified %s: %s\r\n", web_request->req_file, file_mod_status);
 }
-=======
->>>>>>> 64a53322e9217a08d4e704d7046b177d2ecf6fd5

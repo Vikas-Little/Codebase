@@ -1,4 +1,4 @@
-// A client program to request the server to delete a file which is present in the "client" directory
+// A client program to request the server to echo the contents of an HTTP Request back to the requester
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -23,11 +23,11 @@ int main(int argc, char *argv[])
     struct hostent *server;
     char buffer[BUF_SIZE];
     int i = 0;
-    char delete_request[2000], str1[150], str2[150], str4[150];
+    char trace_request[2000], str1[150], str2[150], str3[150];
     strncpy(str1, "", sizeof(str1));
     strncpy(str2, "", sizeof(str2));
-    strncpy(str4, "", sizeof(str4));
-    strncpy(delete_request, "", sizeof(delete_request));
+    strncpy(str3, "", sizeof(str3));
+    strncpy(trace_request, "", sizeof(trace_request));
 
     if (argc < 3)
     {
@@ -62,24 +62,17 @@ int main(int argc, char *argv[])
         error("ERROR connecting...");
     }
 
-    printf("Welcome!, You are now connected to LightHTTPServer.\n");
-    printf("Please enter the name of the file which you would like to delete:\n");
-    scanf("%s", str2);
-    printf("\n");
-    sprintf(str1, "DELETE /%s HTTP/1.1\r\n", str2);
-    char str3[] = "User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36\r\n";
-    sprintf(str4, "Host: %s\r\n", argv[1]);
-    char str5[] = "Accept-Language: en-GB,en-US;q=0.8,en;q=0.6\r\n"
-                  "Connection: keep-alive\r\n\r\n";
+    sprintf(str1, "TRACE / HTTP/1.1\r\n");
+    sprintf(str2, "Host: %s\r\n", argv[1]);
+    sprintf(str3, "User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36\r\n\r\n");
 
-    strcat(delete_request, str1);
-    strcat(delete_request, str3);
-    strcat(delete_request, str4);
-    strcat(delete_request, str5);
+    strcat(trace_request, str1);
+    strcat(trace_request, str2);
+    strcat(trace_request, str3);
 
-    //printf("%s", delete_request);
+    //printf("%s", trace_request);
 
-    n = write(sockfd, delete_request, strlen(delete_request));
+    n = write(sockfd, trace_request, strlen(trace_request));
     if (n < 0)
     {
         error("ERROR writing to socket...");

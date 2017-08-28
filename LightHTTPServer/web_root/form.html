@@ -1,63 +1,54 @@
-<html>
-	<head>
-	<title>Form</title>
-	
-	<style type="text/css">
-	
-	*{margin:0px}
-	#p1 {font-family:Century Gothic; font-size:30px}
-	#p2 {font-family:Century Gothic}
-	#form1 {padding-left:30%}
-	</style>
-	
-	</head>
-	
-	<body>
-	
-		<form method="POST" >
-		<center><p id="p1">SAMPLE FORM</p></center>
-			<center>
-			<table border="3" align="center" cellspacing="5" cellpadding="5">
-				<tr>
-					<td><b><p id="p2">First Name:</p></b></td>
-					<td><input name="fname" type="text" size="30" maxlength="20" placeholder="Enter your First Name" required></td>
-				</tr>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Sample Form</title>
 
-				<tr>
-					<td><b><p id="p2">Last Name:</p></b></td>
-					<td><input name="lname" type="text" size="30" maxlength="20" placeholder="Enter your Last Name" required></td>
-				</tr>
-				
-				<tr>
-					<td><b><p id="p2">Age:</p></b></td>
-					<td><input name="age" type="text" size="7" maxlength="5" placeholder="Enter Age" required></td>
-				</tr>
-				
-				<tr>
-					<td><b><p id="p2">Email:</p></b></td>
-					<td><input name="email" type="text" size="30" maxlength="20" placeholder="Enter your Email Address" required></td>
-				</tr>
-				
-				<tr>
-					<td><b><p id="p2">Address:</p></b></td>
-					<td><textarea name="addr" rows="8" cols="42" placeholder="Complete Postal Address"></textarea></td>
-				</tr>
-				
-				{{error_message}}
-				<tr>
-					<td><th colspan="2">
-					<input type="submit" value="Submit">
-					<input type="reset" value="Reset">
-					</th></td>
-				</tr>
+<style>
+*{margin:0px}
 
-				{{success_message}}
-			</table>
-			</center>
-		</form>
-		
-	</body>
-</html>	
-				
-				
-				
+	body {background-color:#d5d8dc}
+	#ids01 {background-color: rgba(121,125,127,0.0); height:30px; width:350px; border: 1.5px solid #707b7c; padding:5px;             font-size:15px; font-family:Arial; color:#666; border-radius:10px}
+	#idsa02 {background-color: rgba(121,125,127,0.0); border:1.5px solid #707b7c; padding:5px; font-size:15px; font-family:Arial; color:#ecf0f1; border-radius:10px}
+	#ids001 {background-color: rgba(121,125,127,0.0); height:30px; width:35px; border:1.5px solid #707b7c; padding:5px; font-size:             15px; font-family:Arial; color:#ecf0f1; border-radius:10px; color:#666}
+	#ids002 {background-color: rgba(121,125,127,0.0); height:30px; width:300px; border:1.5px solid #707b7c; padding:5px; font-size             :15px; font-family:Arial; color:#666; border-radius:10px}
+	
+	#ids02 {text-align:center; padding-top:30px}
+	#sh1 {font-size:30px; font-family:Arial; text-align:center; color:#515a5a; padding-top:15px}
+	#sh2 {font-size:20px; font-family:Arial; text-align:center; color:#d0d3d4; padding-top:10px}
+	
+	#btns1 {height:40px; width:150px; font-family:Arial, Helvetica, sans-serif; font-size:15px; background-color:#5dade2; border:none; color:#fefefe; border-radius:8px; -webkit-transition-duration:0.6s}
+	#btns1:hover {background-color:rgba(93,173,226,0.5); cursor:pointer; border-bottom:1px solid rgb(255,255,255)}
+	
+		#btns2 {height:40px; width:150px; font-family:Arial, Helvetica, sans-serif; font-size:15px; background-color:#5dade2; border:none; color:#fefefe; border-radius:8px; -webkit-transition-duration:0.6s}
+	#btns2:hover {background-color:rgba(93,173,226,0.5); cursor:pointer; border-bottom:1px solid rgb(255,255,255)}
+
+
+</style>
+
+
+</head>
+
+<body scroll="yes">
+
+	<p id="sh1">Sample Form</p>
+
+	<div id = "ids02">
+    
+    <form method = "POST">
+    	<input id="ids01" type="text" placeholder="First Name" required name="fname"><br><br>
+        <input id="ids01" type="text" placeholder="Last Name" required name="lname"><br><br>
+        <input id="ids01" type="text" placeholder="Age" required name="age"><br><br>
+        <input id="ids01" type="text" placeholder="Email ID" required name="email"><br><br>
+        <textarea id="idsa02" rows="6" cols="42" placeholder="Address" required name="addr"></textarea><br><br>
+        <input id="ids001" type="text" value="+91" required name = "phone">&nbsp;
+        <input id="ids002" type="text" placeholder="Mobile Number" required><br><br><br>
+        <input id="btns1" type="submit" value="Submit">&nbsp;&nbsp;
+        <input id="btns2" type="reset" value="Reset">
+        <br><br>
+    </form>    
+    
+    </div>
+
+</body>
+</html>

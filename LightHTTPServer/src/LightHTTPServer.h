@@ -17,12 +17,12 @@
 #include <sys/stat.h>
 #include <stdio.h>
 
-
 int sockfd, newsockfd;
 struct sockaddr_in cl_addr, addr;
 char clientAddr[CLADDR_LEN];
 char buffer[BUF_SIZE];
 char Files_Array[200][256];
+char *query_str_ptr;
 int remove_status;
 char current_tm_dt[50];
 char file_mod_status[100];
@@ -34,7 +34,7 @@ struct WebRequest
 	char query_string[1000];
 	char file[1000];
 	char req_file[1000];
-    char protocol[10];
+	char protocol[10];
 	char host[20];
 	char connection_type[15];
 	char accept_media[200];
@@ -42,7 +42,7 @@ struct WebRequest
 	char user_agent[200];
 	char accept_encoding[100];
 	char accept_language[50];
-	char upgrade_insecure_requests[10];	
+	char upgrade_insecure_requests[10];
 	char cache_control[50];
 	char pragma[50];
 };
@@ -51,9 +51,10 @@ struct WebForm
 {
 	char first_name[100];
 	char last_name[100];
-   	char age[5];
-   	char email[100];
-   	char address[500];
+	char age[5];
+	char email[100];
+	char address[500];
+	char phone[50];
 };
 
 void start_server();
@@ -64,10 +65,10 @@ void receive_data();
 
 void set_http_response(struct WebRequest *, char req_file[]);
 
-void send_data(int , char *);
+void send_data(int, char *);
 
 void send_header();
 
-void quitproc (int );
+void quitproc(int);
 
 #endif

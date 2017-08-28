@@ -13,15 +13,15 @@
 
 extern int http_response;
 
-void read_file(FILE *, char content[], long );
+void read_file(FILE *, char content[], long);
 
 long get_file_size(FILE *);
 
-FILE* get_requested_file_pointer(struct WebRequest *, char req_file[], char local_file_location[]);
+FILE *get_requested_file_pointer(struct WebRequest *, char req_file[], char local_file_location[]);
 
 void get_directory_files(char local_file_location[]);
 
-FILE* check_dir_index_file(char local_file_location[]);
+FILE *check_dir_index_file(char local_file_location[]);
 
 bool is_directory(char local_file_location[]);
 

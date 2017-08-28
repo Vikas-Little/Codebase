@@ -1,0 +1,73 @@
+<html>
+
+<head lang="en">
+    <title>BS Multimedia Examples</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="media/bootstrap.min.css">
+    <script src="media/jquery.min.js"></script>
+    <script src="media/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <h1>Bootstrap Images</h1>
+        <h2>1. Rounded Corners</h2>
+        <p>The .img-rounded class adds rounded corners to an image (not available in IE8):</p>
+        <img src="../../../Pictures/IMG_989.jpg" class="img-rounded" alt="Sample Image" width="304" height="236">
+        <h2>2. Circle</h2>
+        <p>The .img-circle class shapes the image to a circle (not available in IE8):</p>
+        <img src="../../../Pictures/IMG_989.jpg" class="img-circle" alt="Sample Image" width="304" height="236">
+        <h2>3. Thumbnail</h2>
+        <p>The .img-thumbnail class creates a thumbnail of the image:</p>
+        <img src="../../../Pictures/IMG_989.jpg" class="img-thumbnail" alt="Sample Image" width="304" height="236">
+        <h2>Image</h2>
+        <p>The .img-responsive class makes the image scale nicely to the parent element (resize the browser window to see the
+            effect). The .img-responsive class applies display: block; and max-width: 100%; and height: auto; to the image:</p>
+        <img src="../../../Pictures/IMG_989.jpg" class="img-responsive" alt="Sample Image" width="460" height="306">
+        <h2>4. Image Gallery</h2>
+        <p>The .thumbnail class can be used to display an image gallery.</p>
+        <p>The .caption class adds proper padding and a dark grey color to text inside thumbnails.</p>
+        <p>Click on the images to enlarge them.</p>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="thumbnail">
+                    <a href="../../../Pictures/IMG_989.jpg" target="_blank">
+                        <img src="../../../Pictures/IMG_989.jpg" alt="Sample Image 1" style="width:100%">
+                        <div class="caption">
+                            <p>Sample Image 1</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="thumbnail">
+                    <a href="../../../Pictures/IMG_988.jpg" target="_blank">
+                        <img src="../../../Pictures/IMG_988.jpg" alt="Sample Image 2" style="width:100%">
+                        <div class="caption">
+                            <p>Sample Image 2</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="thumbnail">
+                    <a href="../../../Pictures/IMG_416050.jpg" target="_blank">
+                        <img src="../../../Pictures/IMG_416050.jpg" alt="Sample Image 3" style="width:100%">
+                        <div class="caption">
+                            <p>Sample Image 3</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <h2>Responsive Embed:</h2>
+        <p>Create a responsive video and scale it nicely to the parent element with an 16:9 aspect ratio.</p>
+        <div class="embed-responsive embed-responsive-16by9">
+            <!-- The containing <div> defines the aspect ratio of the video -->
+            <iframe class="embed-responsive-item" src="../../../Videos/video.mp4"></iframe>
+        </div>
+    </div>
+</body>
+
+</html>
